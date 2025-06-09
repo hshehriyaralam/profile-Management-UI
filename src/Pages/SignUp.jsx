@@ -27,7 +27,7 @@ const SignUp = () => {
           console.log('access_token',tokenResponse.access_token);
 
 
-        const backendRes = await axios.post('/api/user/google-auth', {
+        const backendRes = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/google-auth`, {
           token : null,
           userInfo : res.data
         },{
@@ -55,7 +55,7 @@ const SignUp = () => {
         alert("Please enter a valid email format");
         return;
       }
-      await axios.post('/api/user/register', {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/register`, {
         fullName : fullName,
         email : email,
         password : password

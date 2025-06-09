@@ -4,6 +4,7 @@ import Home from './Pages/Home.jsx'
 import SignUp from './Pages/SignUp.jsx'
 import Header from './Pages/Header.jsx'
 import Login from './Pages/Login.jsx'
+import Todo from "./Pages/Todo.jsx"
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Home />}  />
         <Route path="/Signup" element={<SignUp />}  />
         <Route path="/login" element={<Login />}  />
+        <Route path="/todo" element={<Todo />}  />
       </Routes>
       </BrowserRouter>
     </div>

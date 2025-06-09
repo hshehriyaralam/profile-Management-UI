@@ -6,13 +6,6 @@ const EditableProfile =  () => {
     
   const navigate = useNavigate()
 
-  
-  const dummyUser = {
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "https://i.pravatar.cc/150?img=12",
-  };
-
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [updateName, setUpdateName] = useState('')
@@ -21,11 +14,15 @@ const EditableProfile =  () => {
   const [email, setEmail] = useState('');
   const [picture, setPicture] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
+  const [selectedfile, setSelcetedFile] = useState(null)
+  const [uploading, setUploading] = useState(false)
+
+
 
 
   const getUser = async () => {
       try{
-        const response = await axios.get('/api/user/getUser', {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/getUser`, {
             withCredentials : true,
         })
         if(!response.data.user){
@@ -59,7 +56,7 @@ const EditableProfile =  () => {
 
   const logOut = async () => {
     try{
-       await axios.post('/api/user/logout',{} , {
+       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/logout`,{} , {
         withCredentials : true,
       })
       navigate('/login')
@@ -80,7 +77,7 @@ const EditableProfile =  () => {
       return;
     }
     try{
-        await axios.put('/api/user/edit',updateData ,{
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/user/edit`,updateData ,{
         withCredentials : true,
       },
     )
@@ -93,18 +90,57 @@ const EditableProfile =  () => {
 
   const handleModal = () => {
     setModalOpen(true)
+  } 
+
+
+  // image edit 
+  const handleImageUpload = async (e) => {
+    e.preventDefault()
+
+    if(!selectedfile){
+      alert("Please select an image first");
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('profilePicture', selectedfile)
+
+    try{
+      setUploading(true)
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/upload-profile`, formData, {
+        withCredentials : true,
+
+        headers : {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }, 
+    
+    )
+        setPicture(response.data.avatarUrl)
+        setSelcetedFile(null)
+        setModalOpen(false)
+        window.location.reload()
+    
+    }catch(error){
+       console.error('Image upload failed:', error.message);
+       alert("Image upload failed");
+    }finally{
+      setUploading(false)
+    }
   }
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
       <div className="w-full max-w-md bg-transparent border border-gray-100 shadow-lg rounded-2xl p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-300">Edit Profile</h2>
 
-        {/* Profile Image */}
-        <div className="flex flex-col items-center">
+           <div className="flex flex-col items-center">
           <img
-            src={picture || dummyUser.avatar}
-            alt="Profile"
+            src={picture || 'https://cdn.pixabay.com/photo/2023/06/23/11/23/ai-generated-8083323_1280.jpg'}
+            alt="Profile Image"
             className="w-24 h-24 rounded-full shadow-md"
+             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
           />
           <div className="mt-2 flex gap-3">
             <button className="text-sm text-blue-600 hover:underline"
@@ -185,13 +221,16 @@ const EditableProfile =  () => {
       <input
         type="file"
         accept="image/*"
+        onChange={(e) => setSelcetedFile(e.target.files[0])}
         className="w-full text-gray-300 bg-gray-700 p-2 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
 
       <button
+      onClick={handleImageUpload}
+      disabled={uploading}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-200"
       >
-        Update Image
+        {uploading ? 'Uploading...' : 'Update Image'}
       </button>
 
       <button

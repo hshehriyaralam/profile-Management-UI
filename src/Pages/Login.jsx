@@ -11,7 +11,7 @@ const Login = () => {
    const handleLogin = async (e) => {
     e.preventDefault()
     try{
-       await axios.post('/api/user/login', {
+       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/login`, {
       email : email,
       password : password
      },{

@@ -16,6 +16,9 @@ const Header = () => {
           <Link to="/Signup" className="text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">
             Sign Up
           </Link>
+           <Link to="/todo" className="text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">
+            todo
+          </Link>
         </nav>
       </div>
     </header>
