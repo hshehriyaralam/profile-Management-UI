@@ -8,7 +8,9 @@ const Todo = () => {
 
 
    const getTodos = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/getTodo`)
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/getTodo`, {
+      withCredentials : true
+    })
     setTodos(response.data)
     console.log(response.data)
     
