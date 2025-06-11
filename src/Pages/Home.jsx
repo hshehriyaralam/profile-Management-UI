@@ -49,9 +49,7 @@ const EditableProfile =  () => {
      
   }
 
-  useEffect(() => {
-    getUser()
-  },[])
+
 
 
   const logOut = async () => {
@@ -129,6 +127,9 @@ const EditableProfile =  () => {
     }
   }
 
+    useEffect(() => {
+    getUser()
+  },[])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
