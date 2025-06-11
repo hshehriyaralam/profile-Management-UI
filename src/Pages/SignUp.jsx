@@ -28,7 +28,6 @@ const SignUp = () => {
 
 
         const backendRes = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/google-auth`, {
-          token : null,
           userInfo : res.data
         },{
     withCredentials: true
