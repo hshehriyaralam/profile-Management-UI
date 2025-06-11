@@ -59,7 +59,10 @@ const SignUp = () => {
         fullName : fullName,
         email : email,
         password : password
-      })
+      },
+    {
+      withCredentials : true,
+     })
       setFullName('')
       setEmail('')
       setPassowrd('')
