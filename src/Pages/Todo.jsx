@@ -33,7 +33,11 @@ getTodos()
       // add mode
       if(!input.trim()) return ;
       try{
-        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/addTodo`, {title : input})
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/user/addTodo`,
+          { title: input },
+          { withCredentials: true } 
+        )
         setInput('')
         getTodos()
       }catch(error){
